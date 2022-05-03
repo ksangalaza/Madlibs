@@ -4,10 +4,11 @@ import random
 import pymongo
 from pymongo import MongoClient
 import pprint
+import logging
 
-client = MongoClient()
-db_Madlibs = client.Madlibs
-madlibs_data = db_Madlibs.madlibs_data
+# logging.basicConfig(filename= 'Madlibs.log', encoding='utf-8', level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p::')
+
+
 
 
 
@@ -15,6 +16,12 @@ madlibs_data = db_Madlibs.madlibs_data
 
 
 def pick_theme():
+  
+    client = MongoClient()
+    db_Madlibs = client.Madlibs
+    madlibs_data = db_Madlibs.madlibs_data
+
+
     loop = 1
     while (loop < 2):
         while True:
@@ -28,6 +35,7 @@ def pick_theme():
             print("\t 4) A Christmas Carol")
             theme = input(">>>")
             
+            # logging.debug("User inputted theme ", theme)
 
             if not theme == '1' and not theme == '2' and not theme == '3' and not theme == '4':
                 raise ValueError('Theme is not on the list')
@@ -39,6 +47,9 @@ def pick_theme():
             print("\t 1) Let the Computer Generate Words")
             print("\t 2) Choose My Own Words")
             mode = input(">>>")
+
+            # logging.debug("User inputted mode ", mode)
+
             if not mode == '1' and not mode == '2':
                 raise ValueError('Please choose one of the modes 1 or 2: ')
             else:
@@ -51,7 +62,11 @@ def pick_theme():
             Adjective = input('Enter an adjective: ')
             Adverb = input('Enter an Adverb: ')
             ml2 = words.Study(Noun, ProperNoun, Verb, Adjective, Adverb)
+
+            (ml2.write_into_archives())
             print(ml2.studystory())
+            
+           
 
         elif theme == '3' and mode == '2':
             Noun = input('Enter a noun: ')
@@ -61,6 +76,8 @@ def pick_theme():
             Adverb = input('Enter an Adverb: ')
             ml3 = words.Movie(Noun, Propernoun, Verb, Adjective, Adverb)
             print(ml3.moviestory())
+            (ml3.write_into_archives())
+            # logging.info("Successfuly added objects to database.")
 
         elif theme == '4' and mode == '2':
             Noun = input('Enter a noun: ')
@@ -70,6 +87,8 @@ def pick_theme():
             Adverb = input('Enter an Adverb: ')
             ml4 = words.Christmas(Noun, ProperNoun, Verb, Adjective, Adverb)
             print(ml4.christmasstory())
+            (ml4.write_into_archives())
+            # logging.info("Successfuly added objects to database.")
 
         elif theme == '1' and mode == '2':
             ProperNoun = input('Enter a proper noun: ')
@@ -79,10 +98,12 @@ def pick_theme():
             Adverb = input('Enter an Adverb: ')
             ml = words.ThankYou(Noun, ProperNoun, Verb, Adjective, Adverb)
             print(ml.thankyoustory())
+            (ml.write_into_archives())
+            # logging.info("Successfuly added objects to database.")
 
         elif mode == '1' and theme == '2':
             with open("Madlibs_Random.csv", 'r') as computer:
-                generator = csv.reader(computer, delimiter = " ")
+                generator = csv.reader(computer)
                 header = next(generator)
                 col0 = []
                 col1 = []
@@ -101,14 +122,18 @@ def pick_theme():
             random.shuffle(col2)
             random.shuffle(col3)
             random.shuffle(col4)
-            ml3 = words.Study(col0[0], col1[1], col2[2], col3[3], col4[4])
-            print(ml3.studystory())
+            ml2 = words.Study(col0[0], col1[1], col2[2], col3[3], col4[4])
+                
+            print(ml2.studystory())
+            (ml2.write_into_archives())
+            # logging.info("Successfuly added objects to database.")
+
                     
         
         elif mode == '1' and theme == '3':
             
             with open("Madlibs_Random.csv", 'r') as computer:
-                generator = csv.reader(computer, delimiter = " ")
+                generator = csv.reader(computer)
                 header = next(generator)
                 col0 = []
                 col1 = []
@@ -128,12 +153,13 @@ def pick_theme():
             random.shuffle(col4)
             ml3 = words.Movie(col1[0],col0[1], col2[2], col3[3], col4[4])
             print(ml3.moviestory())
-            
+            (ml3.write_into_archives())
+            # logging.info("Successfuly added objects to database.")
                     
 
         elif mode == '1' and theme == '4':
             with open("Madlibs_Random.csv", 'r') as computer:
-                generator = csv.reader(computer, delimiter = " ")
+                generator = csv.reader(computer)
                 header = next(generator)
                 col0 = []
                 col1 = []
@@ -154,7 +180,8 @@ def pick_theme():
             random.shuffle(col4)
             ml4 = words.Christmas(col1[0], col0[1], col2[2], col3[3], col4[4])
             print(ml4.christmasstory())
-            
+            (ml4.write_into_archives())
+            # logging.info("Successfuly added objects to database.")
 
         elif mode == '1' and theme == '1':
             with open("Madlibs_Random.csv", 'r') as computer:
@@ -178,19 +205,14 @@ def pick_theme():
             random.shuffle(col3)
             random.shuffle(col4)
             ml = words.ThankYou(col1[0], col0[1], col2[2], col3[3], col4[4])
+            
             print(ml.thankyoustory())
-            # with open("Madlibs_Random.csv", 'w') as computer:
+            (ml.write_into_archives())
+            # logging.info("Successfuly added objects to database.")
                 
 
                
-               
-
-
 pick_theme()
-
-
-# "def write_into_archives():""
-
 
 
 
