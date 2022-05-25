@@ -32,7 +32,9 @@ An interactive Madlibs game that *creates* a story by user inputs or computer ge
 
 unix:
 >git clone https://github.com/ksangalaza/Madlibs.git
-git pull 
+
+git pull
+
 ![Cloning to your local repository](https://ucarecdn.com/b45aff8c-4408-4ca2-bc60-2c96f75a3abd/ScreenShot20220524at23943PM.png)
 >
 
